@@ -38,7 +38,7 @@ Requisitos:
 	*) Manutenção dos nomes dos diretórios extraídos
 
 Instalação:
-	*) No terminal, vá para dentro do diretório extraído [~dspace-5.3_sedepti]
+	*) No terminal, vá para dentro do diretório extraído (~dspace[versao])
 	*) Suba com as permissões de root
 	*) Execute o comando
 		# ./dspace-installer.sh
