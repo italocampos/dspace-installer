@@ -1,0 +1,52 @@
+=================================================================================
+# DETALHES SOBRE A INSTALAÇÃO DO DSPACE
+
+# Coordenadoria de Gestão de Produtos Informacionais (SEDEPTI)
+# Biblioteca Central da UFPA
+# Universidade Federal do Pará, Campus Belém
+# Brasil
+=================================================================================
+
+Nota: O contexto padrão mínimo no qual é o DSpace é instalado pelo SEDEPTI (2017)
+PARA FINS DE TESTES segue abaixo:
+	*) Sistema Operacional = Linux Debian 8.7.1, jessie, 64bit
+	*) RAM = 1GB (recomendado)
+	*) Disco rígido = mínimo 25GB [este tamanho pode variar consideravelmente
+	   dependendo das políticas que você adotar no repositório]
+
+Recomendações:
+	*) Alocar este pacote de instalação do DSpace no diretório /home/<usuario>
+	*) Verificar políticas da instituição antes de configurar o servidor do
+	   DSpace
+	*) Manter uma conexão estável com a internet durante toda a instalação
+	*) Configurar seu servidor para receber manutenção por SSH
+	*) Mantenha o repositório do seu Sistema Operacional atualizado
+	*) A instalação criará um novo usuário no seu sistema operacional para
+	   manipular o DSpace, por isso recomenda-se fortemente fornecer um nome de
+	   usuário ainda não usado no processo de instalação.
+
+Requisitos:
+	*) Servidor com uma distro Linux com suporte ao gerenciador de pacotes apt,
+	   whiptail, sed, tar, cut e wc (Debian recomendado)
+	*) Conexão com a internet
+	*) Remoção completa (se cabível) de qualquer um desses software:
+		- DSpace;
+		- Apache Tomcat (no diretório /home/<usuario>);
+		- Apache Ant (no diretório /home/<usuario>);
+		- Apache Maven (no diretório /home/<usuario>);
+		- JDK (no diretório /opt/jdk);
+	*) Manutenção dos nomes dos diretórios extraídos
+
+Instalação:
+	*) No terminal, vá para dentro do diretório extraído [~dspace-5.3_sedepti]
+	*) Suba com as permissões de root
+	*) Execute o comando
+		# ./dspace-installer.sh
+	*) Siga os passos da instalação e preencha os dados requisitados
+	*) Aguarde o final da instalação
+
+O SEDEPTI não dá qualquer garantia de que o processo de instalação ocorrerá
+ausente de falhas. Caso você tenha problemas com a instalação, poderá entrar
+em contato conosco [sedepti@ufpa.br]. Recomendamos a consulta ao manual de
+instalação do IBICT http://wiki.ibict.br/index.php/Instalação_do_DSpace_5.x
+para mais detalhes sobre o processo de instalação.
