@@ -36,14 +36,14 @@
 #	Download link (you must accept the Licence Agreement) http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 #
 # Desenvolvimento:
-#	Setor de Desenvolvimento de Produtos de Tecnologia da Informação
+#	Setor de Desenvolvimento de Produtos de Tecnologia da Informação (sedepti@ufpa.br)
 #	Biblioteca Central da UFPA
 #	Universidade Federal do Pará, Campus Belém, Brasil
 # 	Author: Italo Ramon Campos (italo.ramon.campos@gmail.com)
 # 	Developed by SEDEPTI - UFPA
 #
 # Detalhes:
-#	dspace-installer.sh, version 1.4.1, UFPA | 2017
+#	dspace-installer.sh, version 1.42, UFPA | 2017
 
 # =================================================
 # DEFINIÇÕES DAS VARIÁVEIS GLOBAIS E IMPORTS
@@ -54,9 +54,13 @@ password='suporte'
 base_dir='dspace'
 repository='Repositório'
 institution='Instituição'
+logo=''
+dominio='localhost'
+sigla='RI'
+
 step=1
 font=`pwd`
-version='1.4.1'
+version='1.42'
 
 # Imports das bibliotecas de diálogo com o usuário
 source dspace-setup/dialog.sh
@@ -66,15 +70,15 @@ source dspace-setup/verifier.sh
 # INÍCIO DO PROCESSO DE INSTALAÇÃO
 # =================================================
 # Tela de boas vindas
-var=$(choseboxmod "Bem-vindo ao instalador do DSpace. O assistente guiará você durante o processo. Recomendamos que você leia o manual de instalação para tirar suas dúvidas e evitar problemas na configuração do seu repositório. Em caso de problemas no processo entre em contato com o suporte técnico para obter informações. Para iniciar a instalação selecione 'Instalar'. Selecione 'Sair' para cancelar.\n\n\nv$version" "BEM VINDO AO DSPACE" "Instalar" "Sair")
+var=$(choseboxmod "Bem-vindo ao DSpace Installer. O assistente guiará você durante o processo de instalação. Recomendamos que você leia o manual de instalação para tirar suas dúvidas e evitar problemas na configuração do seu repositório. Em caso de problemas no processo entre em contato com o suporte técnico para obter informações. Para iniciar a instalação selecione 'Instalar'. Selecione 'Sair' para cancelar.\n\n\nv$version" "BEM VINDO AO DSPACE" "Instalar" "Sair")
 checkexit $var
 
 # =================================================
 # ENTRADA DE DADOS
 # =================================================
-# Navegação entre os passos da configuração [1-7] do arquivo build.properties
+# Navegação entre os passos da configuração [1-9] do arquivo build.properties
 if [ "$1" != "std" ]; then
-	while [ $step -gt 0 ] && [ $step -le 7 ]; do
+	while [ $step -gt 0 ] && [ $step -le 9 ]; do
 		case $step in
 			1)
 				institution=$(inputboxmod "Nome da instituição:" "CONFIGURAÇÕES INICIAIS DSPACE" "Continuar" "Sair" "$institution")
@@ -82,21 +86,26 @@ if [ "$1" != "std" ]; then
 			;;
 
 			2)
+				sigla=$(inputboxmod "Silga da instituição:" "CONFIGURAÇÕES INICIAIS DSPACE" "Continuar" "Sair")
+				step=$(setstep "$sigla" $step)
+			;;
+
+			3)
 				repository=$(inputboxmod "Nome do repositório:" "CONFIGURAÇÕES INICIAIS DSPACE" "Continuar" "Voltar" "$repository de $institution")
 				step=$(setstep "$repository" $step "r")
 			;;
 
-			3)
+			4)
 				logo=$(inputboxmod "Defina um logotipo para o seu repositório. Informe o caminho da imagem que você deseja usar (algo como /home/usuario/minha_logo.png). O logotipo deve estar no formato 'png'. Deixe em branco se não quiser fazer isso agora." "CONFIGURAÇÕES INICIAIS DSPACE" "Continuar" "Voltar" "$logo")
 				step=$(setstep "$logo" $step)
 			;;
 
-			4)
-				password=$(passwordboxmod "Informe a senha que você usará no banco de dados. Guarde-a em um local seguro pois você precisará fornecê-la ao sistema em seguida para configurar seu banco de dados." "CONFIGURAÇÕES INICIAIS DSPACE" "Continuar" "Voltar")
+			5)
+				password=$(passwordboxmod "Senha do banco de dados. Guarde-a em um local seguro pois você precisará fornecê-la ao sistema em seguida para configurar seu banco de dados." "CONFIGURAÇÕES INICIAIS DSPACE" "Continuar" "Voltar")
 				step=$(setstep "$password" $step "r")
 			;;
 
-			5)
+			6)
 				pass_aux=$(passwordboxmod "Confirme a senha do banco de dados:" "CONFIGURAÇÕES INICIAIS DSPACE" "Confirmar" "Voltar")
 				if [ "$password" != "$pass_aux" ]; then
 					messagebox "As senhas não coincidem ('CAPSLOCK' está ligada?)." "SENHAS NÃO IDÊNTICAS"
@@ -106,16 +115,18 @@ if [ "$1" != "std" ]; then
 				fi
 			;;
 
-			6)
+			7)
 				base_dir=$(inputboxmod "Nome do diretório-base de instalação do DSpace. Esse diretório será criado na raíz '/' do sistema (por isso não use '/'):" "CONFIGURAÇÕES INICIAIS DSPACE" "Continuar" "Voltar" "$base_dir")
 				step=$(setstep "$base_dir" $step "r")
 			;;
 
-			7)
-				if [ "$logo" = "" ]; then
-					logo='[não definido]'
-				fi
-				opcao=$(choseboxmod "Verifique se suas informações estão corretas:\n Instituição: $institution\n Nome do Repositório: $repository\n Caminho da logo: $logo\n Senha do banco de dados: [oculto]\n Diretório-raíz do DSpace: /$base_dir" "REVISÃO DOS DADOS" "Confirmar" "Começar de novo")
+			8)
+				dominio=$(inputboxmod "Domínio do servidor. O domínio do servidor deve estar direcionado a um IP público para fucionar corretamente. Se você ainda não possui um domínio público, informe o endereço IPv4 do seu servidor. Ele deve ser fixo e tem a forma xxx.xxx.xxx.xxx (por exemplo, 192.168.97.232)." "ENDEREÇO DO SERVIDOR" "Continuar" "Voltar")
+				step=$(setstep "$dominio" $step "r")
+			;;
+
+			9)
+				opcao=$(choseboxmod "Verifique se suas informações estão corretas:\n Instituição: $institution\n Sigla: $sigla\n Nome do Repositório: $repository\n Caminho da logo: $logo\n Senha do banco de dados: [oculto]\n Diretório-raíz do DSpace: /$base_dir\n Domínio do servidor: $dominio" "REVISÃO DOS DADOS" "Confirmar" "Começar de novo")
 				if [ $opcao -eq 1 ]; then
 					step=1
 				else
@@ -137,13 +148,19 @@ fi
 # PROCEDIMENTOS DE PREPARAÇÃO 
 # =================================================
 
-# Ajustes no arquivo build.properties
+# Ajustes no arquivo build.properties e input-forms.xml
 sed -i "s/^dspace.install.dir.*/dspace.install.dir=\/$base_dir/" build.properties
 checkerror $? "Arquivo build.properties não encontrado" # verifica se o arquivo de build.properties está disponível
 sed -i "s/^dspace.name.*/dspace.name=$repository/" build.properties
 sed -i "s/^db.username.*/db.username=$user/" build.properties
 sed -i "s/^db.password.*/db.password=$password/" build.properties
 sed -i "s/^websvc.opensearch.description.*/websvc.opensearch.description=$institution/" build.properties
+sed -i "s/^dspace.baseUrl = .*/dspace.baseUrl=http:\/\/$dominio:8080/" build.properties
+sed -i "s/^dspace.url = .*/dspace.url=\${dspace.baseUrl}\/jspui/" build.properties
+sed -i "s/^       <displayed-value>Instituto.*/       <displayed-value>$institution<\/displayed-value>/" dspace/config/input-forms.xml
+sed -i "s/^       <stored-value>Instituto.*/       <stored-value>$institution<\/stored-value>/" dspace/config/input-forms.xml
+sed -i "s/^       <displayed-value>IBICT.*/       <displayed-value>$sigla<\/displayed-value>/" dspace/config/input-forms.xml
+sed -i "s/^       <stored-value>IBICT.*/       <stored-value>$sigla<\/stored-value>/" dspace/config/input-forms.xml
 
 # Configurando um novo grupo/usuário no sistema
 addgroup $user
@@ -162,7 +179,6 @@ home="/home/$user"
 # Copia para a pasta do usuário os pacotes usados pelo DSpace
 mkdir $home/pacotes
 checkwarning $? "Problema ao criar diretório de pacotes-fonte '$home/pacotes'"
-
 {
 	cp packages/jdk* $home/pacotes/
 	cp packages/apache-ant* $home/pacotes/
@@ -288,9 +304,9 @@ percent=1
 {
 	cd $home/dspace-5.x; percent=$((percent+50)); echo $percent
 	rm $font -Rf; percent=$((percent+50)); echo $percent
-} | progressbar "Removendo arquivos de temporários..." "LIMPANDO"
+} | progressbar "Removendo arquivos temporários..." "LIMPANDO"
 
-messagebox "A instalação foi concluída com êxito. Por favor, salve seus trabalhos e reinicie a máquina. Em seguida acesse <ip_servidor>:8080/jspui para ver seu repositório." "INSTALAÇÃO FINALIZADA"
+messagebox "A instalação foi concluída com êxito. Por favor, salve seus trabalhos e reinicie a máquina. Em seguida acesse $dominio:8080/jspui para ver seu repositório." "INSTALAÇÃO FINALIZADA"
 
 # =================================================
 # FIM DO PROCESSO DE INSTALAÇÃO

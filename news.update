@@ -1,0 +1,3 @@
+Novidades da versão 1.42:
+    Ajuste do nome e sigla da instituição no arquivo dspace/config/input-forms.xml
+    Ajuste do ip/domínio do servidor no arquivo build.properties
