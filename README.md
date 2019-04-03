@@ -1,5 +1,11 @@
-# DSpace Installer
+# DSpace Installer (Descontinuado/Discontinued)
 <i>Version 1.4</i>
+
+> ### Aviso/Warning:
+> Este repositório do DSpace Installer foi descontinuado. Entretanto, há um _fork_ sendo mantido no [repositório de @souzaluuk](https://github.com/souzaluuk/dspace-installer), onde há atualizações desde essa versão do _software_.
+
+> This repository of DSpace Installer was discontinued. However, a fork have been maintained in [@souzaluuk repo](https://github.com/souzaluuk/dspace-installer), where there is updates since this version.
+
 
 # O que é?
 O DSpace Installer é uma série de scripts que automatizam o processo de instalação do DSpace 5.2. Atualmente o código-fonte do
